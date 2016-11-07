@@ -20,6 +20,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -31,6 +32,7 @@ import com.codepath.apps.tripletweet.adapter.TweetsArrayAdapter;
 import com.codepath.apps.tripletweet.fragment.ComposeFragment;
 import com.codepath.apps.tripletweet.fragment.HomeTimelineFragment;
 import com.codepath.apps.tripletweet.fragment.MentionsTimelineFragment;
+import com.codepath.apps.tripletweet.fragment.TweetListFragment;
 import com.codepath.apps.tripletweet.models.Tweet;
 import com.codepath.apps.tripletweet.network.TwitterApplication;
 import com.codepath.apps.tripletweet.network.TwitterClient;
@@ -50,19 +52,16 @@ import cz.msebera.android.httpclient.Header;
 
 import static com.codepath.apps.tripletweet.R.color.tweet;
 
-public class TimelineActivity extends AppCompatActivity {
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-
+public class TimelineActivity extends BaseClass {
     @BindView(R.id.tabs)
     PagerSlidingTabStrip tabLayout;
 
     @BindView(R.id.viewpager)
     ViewPager viewPager;
 
+
     @BindView(R.id.fab)
     FloatingActionButton fab;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,12 +69,6 @@ public class TimelineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timeline);
 
         ButterKnife.bind(this);
-
-        floatingActionButton();
-
-        // Action bar support
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setupViewPager(viewPager);
 
@@ -92,9 +85,15 @@ public class TimelineActivity extends AppCompatActivity {
         TweetsPagerAdapter adapter = new TweetsPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
     }
+
+    public FloatingActionButton getFloatingActionButton() {
+        return fab;
+    }
+
+
     /*
-      *  TweetsPagerAdapter
-      */
+     *  TweetsPagerAdapter
+     */
     public class TweetsPagerAdapter extends FragmentPagerAdapter {
         private String tabTitles[] = {"HOME", "MENTIONS"};
 
@@ -126,31 +125,5 @@ public class TimelineActivity extends AppCompatActivity {
         public int getCount() {
             return tabTitles.length;
         }
-    }
-
-
-    /*
-*   Floating Action Button
-*/
-    private void floatingActionButton() {
-
-        fab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(getString(R.string.tweet_color))));
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showComposeDialog();
-            }
-        });
-    }
-
-    /*
-    *   Show Compose Dialog
-    */
-    public void showComposeDialog() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        ComposeFragment composeDialogFragment = ComposeFragment.newInstance(getString(R.string.new_tweet));
-        composeDialogFragment.show(fragmentManager, getString(R.string.compose_fragment));
-        composeDialogFragment.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Holo_Dialog_NoActionBar);
     }
 }

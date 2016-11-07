@@ -53,6 +53,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.codepath.apps.tripletweet.activity.TimelineActivity" />
         </activity>
+        <activity
+            android:name=".activity.ProfileActivity"
+            android:label="Profile"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>

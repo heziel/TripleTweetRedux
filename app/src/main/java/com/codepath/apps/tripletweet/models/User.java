@@ -12,9 +12,10 @@ public class User {
     public long   uniqueId;
     public String screenName;
     public String profileImageUrl;
+    public String profileBackgroundImageUrl;
+    public String description;
 
     // Getters
-
     public String getName() {
         return name;
     }
@@ -31,6 +32,10 @@ public class User {
         return profileImageUrl;
     }
 
+    public String getProfileBackgroundImageUrl() { return profileBackgroundImageUrl; }
+
+    public String getDescription() { return description; }
+
     public static User fromJSON(JSONObject jsonObject){
         User user = new User();
 
@@ -39,13 +44,12 @@ public class User {
             user.name = jsonObject.getString("name");
             user.uniqueId = jsonObject.getLong("id");
             user.screenName = "@" + jsonObject.getString("screen_name");
-            user.profileImageUrl =jsonObject.getString("profile_image_url");
+            user.profileImageUrl = jsonObject.getString("profile_image_url");
+            user.profileBackgroundImageUrl = jsonObject.getString("profile_background_image_url");
+            user.description = jsonObject.getString("description");
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return user;
-
     }
-
-
 }

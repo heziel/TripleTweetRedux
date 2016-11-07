@@ -4,6 +4,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="user_header_height">250dp</dimen>
 
     <!-- For Twitter Like App -->
     <dimen name="feed_item_margin">10dp</dimen>

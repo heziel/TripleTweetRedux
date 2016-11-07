@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import com.codepath.apps.tripletweet.network.TwitterClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import butterknife.BindView;
@@ -84,6 +86,12 @@ public class DetailActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                         ivRetweet.setImageResource(R.drawable.ic_twitter_retweet_done);
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                       super.onFailure(statusCode, headers, throwable, errorResponse);
+                        Log.d("setImageResource",errorResponse.toString());
                     }
 
                     @Override

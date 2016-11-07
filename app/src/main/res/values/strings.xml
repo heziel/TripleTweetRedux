@@ -12,5 +12,7 @@
     <string name="compose_fragment">compose_fragment</string>
     <string name="title_activity_detail"> Tweet Detail</string>
     <string name="tweet_color">#1DA0F2</string>
+    <string name="profile_title">profile title</string>
+    <string name="search_tweets_title">search tweets title</string>
 
 </resources>

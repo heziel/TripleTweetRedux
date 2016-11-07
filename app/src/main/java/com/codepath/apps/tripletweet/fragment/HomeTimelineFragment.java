@@ -42,9 +42,7 @@ public class HomeTimelineFragment extends TweetListFragment {
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
 
                 ArrayList<Tweet> tweets = Tweet.fromJSONArray(json);
-
                 addAll(tweets);
-
                 getTweetsArrayAdapter().notifyDataSetChanged();
 
                 // disable pull to refresh
@@ -56,17 +54,6 @@ public class HomeTimelineFragment extends TweetListFragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Log.d("Home Fragment", responseString);
-            }
-
-            @Override
-            protected void handleMessage(Message message) {
-                Log.d("Home Fragment", message.toString());
-                super.handleMessage(message);
-            }
-
-            @Override
-            public void onUserException(Throwable error) {
-                Log.d("Home Fragment", error.getMessage());
             }
         });
     }

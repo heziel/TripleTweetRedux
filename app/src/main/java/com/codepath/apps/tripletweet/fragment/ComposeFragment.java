@@ -216,6 +216,8 @@ public class ComposeFragment extends DialogFragment {
                 Tweet curTweeet = Tweet.fromJSON(response);
                 listener.onFinishComposeTweet(curTweeet);
                 dismiss();
+
+                //getActivity().getFragmentManager().getFragment()
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {

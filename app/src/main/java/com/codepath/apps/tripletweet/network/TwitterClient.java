@@ -1,9 +1,11 @@
 package com.codepath.apps.tripletweet.network;
 
+import org.antlr.v4.misc.Utils;
 import org.scribe.builder.api.Api;
 import org.scribe.builder.api.FlickrApi;
 import org.scribe.builder.api.TwitterApi;
 
+import android.app.Activity;
 import android.content.Context;
 import android.preference.PreferenceActivity;
 
@@ -68,7 +70,7 @@ public class TwitterClient extends OAuthBaseClient {
 		RequestParams params = new RequestParams();
 		params.put("count",25);
 		//params.put("max_id",maxId);
-		//	params.put("since_id",1); // most recent tweets.
+		params.put("since_id",1); // most recent tweets.
 		getClient().get(apiUrl,params,handler);
 	}
 
@@ -84,5 +86,17 @@ public class TwitterClient extends OAuthBaseClient {
 		RequestParams params = new RequestParams();
 		params.put("id", id);
 		client.post(apiUrl, params, handler);
+	}
+
+	public void getUserProfile(AsyncHttpResponseHandler handler){
+		String apiUrl = getApiUrl("account/verify_credentials.json");
+		client.get(apiUrl, handler);
+	}
+
+	public void getUserProfile(long userId, AsyncHttpResponseHandler handler){
+		String apiUrl = getApiUrl("users/show.json");
+		RequestParams params = new RequestParams();
+		params.put("user_id", userId);
+		client.get(apiUrl, params, handler);
 	}
 }
