@@ -1,21 +1,25 @@
 package com.codepath.apps.tripletweet.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.tripletweet.R;
 import com.codepath.apps.tripletweet.models.Tweet;
+import com.codepath.apps.tripletweet.utils.PatternEditableBuilder;
 import com.codepath.apps.tripletweet.viewHolder.TweetViewHolder;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Pattern;
 import java.util.zip.Inflater;
 
 
@@ -57,6 +61,18 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<TweetViewHolder>{
         Tweet tweet = tweetList.get(position);
 
         holder.getTvTweetFeed().setText(tweet.getBody());
+
+        // Style clickable spans based on pattern
+        new PatternEditableBuilder().
+                addPattern(Pattern.compile("\\@(\\w+)"), Color.BLUE,
+                        new PatternEditableBuilder.SpannableClickedListener() {
+                            @Override
+                            public void onSpanClicked(String text) {
+                                Toast.makeText(getContext() , "Clicked username: " + text,
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }).into(holder.getTvTweetFeed());
+
         holder.getTvName().setText(tweet.getUser().getName());
         holder.getTvTimeStamp().setText(getRelativeTimeAgo(tweet.getCreatedAt()));
         holder.getTvUserName().setText(tweet.getUser().getScreenName());
@@ -117,5 +133,6 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<TweetViewHolder>{
 
     public void add(Tweet tweet) {
         tweetList.add(tweet);
+        notifyDataSetChanged();
     }
 }

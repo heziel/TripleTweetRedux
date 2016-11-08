@@ -14,10 +14,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.codepath.apps.tripletweet.R;
-import com.codepath.apps.tripletweet.activity.TimelineActivity;
 import com.codepath.apps.tripletweet.adapter.TweetsArrayAdapter;
 import com.codepath.apps.tripletweet.models.Tweet;
 import com.codepath.apps.tripletweet.utils.EndlessRecyclerViewScrollListener;
@@ -32,6 +30,8 @@ public abstract class TweetListFragment extends Fragment implements ComposeFragm
     @BindView(R.id.swipeContainer)
     SwipeRefreshLayout swipeContainerLayout;
 
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
 
     private ArrayList<Tweet> tweetArrayList;
     private DialogFragment composeFragment;
@@ -39,7 +39,7 @@ public abstract class TweetListFragment extends Fragment implements ComposeFragm
     private RecyclerView rvTripleTweet;
     private SwipeRefreshLayout swipeContainer;
     private EndlessRecyclerViewScrollListener scrollListener;
-    private FloatingActionButton fab;
+  //  private FloatingActionButton fab;
 
     //getters
     public TweetsArrayAdapter getTweetsArrayAdapter() {
@@ -72,8 +72,9 @@ public abstract class TweetListFragment extends Fragment implements ComposeFragm
 
         ButterKnife.bind(this, view);
 
-        floatingActionButton();
+        fab.setVisibility(View.VISIBLE);
 
+        floatingActionButton();
 
         rvTripleTweet = (RecyclerView) view.findViewById(R.id.rvTripleTweet);
         rvTripleTweet.setHasFixedSize(true);
@@ -129,12 +130,8 @@ public abstract class TweetListFragment extends Fragment implements ComposeFragm
             @Override
             public void onRefresh() {
                 // clear the array of data
-                // tweetArrayList.clear();
-                // Notify the adapter of the update
-                //  tweetsArrayAdapter.notifyDataSetChanged(); // or notifyItemRangeRemoved
                 getTweetsArrayAdapter().clear();
                 populateTimeline(null);
-                // tweetsArrayAdapter.notifyDataSetChanged(); // or notifyItemRangeRemoved
             }
         });
 
@@ -150,8 +147,6 @@ public abstract class TweetListFragment extends Fragment implements ComposeFragm
     *   Floating Action Button
     */
     private void floatingActionButton() {
-        fab = ((TimelineActivity) getActivity()).getFloatingActionButton();
-
         fab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(getString(R.string.tweet_color))));
 
         fab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(getString(R.string.tweet_color))));
@@ -170,6 +165,7 @@ public abstract class TweetListFragment extends Fragment implements ComposeFragm
     public void showComposeDialog() {
         FragmentManager fragmentManager = getFragmentManager();
         ComposeFragment composeDialogFragment = ComposeFragment.newInstance(getString(R.string.new_tweet));
+        composeDialogFragment.setTargetFragment(this, 0);
         composeDialogFragment.show(fragmentManager, getString(R.string.compose_fragment));
         composeDialogFragment.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Holo_Dialog_NoActionBar);
     }
@@ -178,4 +174,5 @@ public abstract class TweetListFragment extends Fragment implements ComposeFragm
     public void onFinishComposeTweet(Tweet tweet) {
         tweetsArrayAdapter.add(tweet);
     }
+
 }

@@ -15,10 +15,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ToxicBakery.viewpager.transforms.CubeInTransformer;
+import com.ToxicBakery.viewpager.transforms.RotateUpTransformer;
+import com.astuetz.PagerSlidingTabStrip;
 import com.bumptech.glide.Glide;
 import com.codepath.apps.tripletweet.R;
+import com.codepath.apps.tripletweet.fragment.FollowersFragment;
+import com.codepath.apps.tripletweet.fragment.FollowingFragment;
 import com.codepath.apps.tripletweet.fragment.HomeTimelineFragment;
 import com.codepath.apps.tripletweet.fragment.MentionsTimelineFragment;
+import com.codepath.apps.tripletweet.fragment.UserTimelineFragment;
 import com.codepath.apps.tripletweet.models.Tweet;
 import com.codepath.apps.tripletweet.models.User;
 import com.codepath.apps.tripletweet.network.TwitterApplication;
@@ -50,11 +56,22 @@ public class ProfileActivity extends BaseClass {
     @BindView(R.id.tvUserDescription)
     TextView tvUserDescription;
 
+    @BindView(R.id.tvFollowersCount)
+    TextView tvFollowersCount;
+
+    @BindView(R.id.tvFollowingCount)
+    TextView tvFollowingCount;
+
     @BindView(R.id.vpProfile)
     ViewPager viewPager;
 
+    @BindView(R.id.tabsProfile)
+    PagerSlidingTabStrip tabLayout;
+
     public TwitterClient twitterClient;
-    User user;
+    public User user;
+    public ProfilePagerAdapter adapter;
+    public Long userId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,28 +80,34 @@ public class ProfileActivity extends BaseClass {
 
         ButterKnife.bind(this);
 
-      //  setupViewPager(viewPager);
-
         // getting singleton client
         twitterClient = TwitterApplication.getRestClient();
 
         Intent intent = getIntent();
-        long userId = intent.getLongExtra("userId",0);
-        if (userId > 0)
+        userId = intent.getLongExtra("userId",0);
+
+
+        if (userId != 0) {
             populateUserProfile(userId);
-        else
+        }
+        else {
             populateUserProfile();
+        }
+
+        adapter = new ProfilePagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(adapter);
+        tabLayout.setViewPager(viewPager);
+
+        viewPager.setPageTransformer(true, new CubeInTransformer());
     }
 
-    private void setupViewPager(ViewPager viewPager) {
-        ProfileActivity.ProfilePagerAdapter adapter = new ProfileActivity.ProfilePagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(adapter);
-    }
 
     private void fillUserProfile() {
         tvUserName.setText(user.getName());
         tvUserScreenName.setText(user.getScreenName());
         tvUserDescription.setText(user.getDescription());
+        tvFollowersCount.setText(String.valueOf(user.getFollowersCount()));
+        tvFollowingCount.setText(String.valueOf(user.getFollowingCount()));
 
         Glide.with(this).load(user.getProfileBackgroundImageUrl()).error(R.drawable.shape_banner_placeholder).
                 placeholder(R.drawable.shape_banner_placeholder).into(ivUserBackgroundImage);
@@ -151,7 +174,8 @@ public class ProfileActivity extends BaseClass {
      *  TweetsPagerAdapter
      */
     public class ProfilePagerAdapter extends FragmentPagerAdapter {
-        private String tabTitles[] = {"TWEETS", "FOLLOWING", "FOLLOWERS", "FAVORITES"};
+        private String tabTitles[] = {"TWEETS", "FOLLOWING", "FOLLOWERS"};
+      //  private long userId;
 
         public ProfilePagerAdapter(FragmentManager fm) {
             super(fm);
@@ -164,16 +188,13 @@ public class ProfileActivity extends BaseClass {
 
         @Override
         public Fragment getItem(int position) {
-/*            if (position == 0) {
-                return new HomeTimelineFragment();
-*//*            }
-else if (position == 1) {
-                return  new FollowingFragment();
+            if (position == 0) {
+                return UserTimelineFragment.newInstance(userId);
+            }else if (position == 1) {
+                return FollowingFragment.newInstance(userId);
             } else if ( position == 2){
-               return  new FollowersFragment();
-            } else if ( position == 3 ){
-                return new FavoritesFragment();   *//*
-            } else*/
+                return FollowersFragment.newInstance(userId);
+            } else
                 return null;
         }
 

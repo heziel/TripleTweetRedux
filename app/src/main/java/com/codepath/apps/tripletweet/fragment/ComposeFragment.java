@@ -209,15 +209,13 @@ public class ComposeFragment extends DialogFragment {
     * Call this method to send the data back to the parent fragment
     */
     public void sendBackResult() {
-        final newTweetListener listener = (newTweetListener) getActivity();
+        final newTweetListener listener = (newTweetListener) getTargetFragment();
         client.postUpdate(etNewTweet.getText().toString(), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Tweet curTweeet = Tweet.fromJSON(response);
                 listener.onFinishComposeTweet(curTweeet);
                 dismiss();
-
-                //getActivity().getFragmentManager().getFragment()
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {

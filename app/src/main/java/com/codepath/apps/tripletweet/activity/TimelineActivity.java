@@ -1,50 +1,26 @@
 package com.codepath.apps.tripletweet.activity;
 
-import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.nfc.Tag;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.ToxicBakery.viewpager.transforms.RotateUpTransformer;
 import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.tripletweet.R;
-import com.codepath.apps.tripletweet.adapter.TweetsArrayAdapter;
-import com.codepath.apps.tripletweet.fragment.ComposeFragment;
 import com.codepath.apps.tripletweet.fragment.HomeTimelineFragment;
 import com.codepath.apps.tripletweet.fragment.MentionsTimelineFragment;
-import com.codepath.apps.tripletweet.fragment.TweetListFragment;
-import com.codepath.apps.tripletweet.models.Tweet;
-import com.codepath.apps.tripletweet.network.TwitterApplication;
-import com.codepath.apps.tripletweet.network.TwitterClient;
-import com.codepath.apps.tripletweet.utils.EndlessRecyclerViewScrollListener;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.raizlabs.android.dbflow.config.FlowConfig;
-import com.raizlabs.android.dbflow.config.FlowManager;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 
-import java.util.ArrayList;
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -60,9 +36,6 @@ public class TimelineActivity extends BaseClass {
     ViewPager viewPager;
 
 
-    @BindView(R.id.fab)
-    FloatingActionButton fab;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,13 +44,16 @@ public class TimelineActivity extends BaseClass {
         ButterKnife.bind(this);
 
         setupViewPager(viewPager);
-
-        //tabLayout.setupWithViewPager(viewPager);
         tabLayout.setViewPager(viewPager);
 
         /* set pager transformation
          (RotateUpTransformer, AccordionTransformer, CubeInTransformer, FlipHorizontalTransformer, ScaleInOutTransformer, ZoomInTransformer)*/
         viewPager.setPageTransformer(true, new RotateUpTransformer());
+
+        // Check Connectivity
+        if ( ! isNetworkAvailable()  || ! isOnline()){
+            Toast.makeText(this,"Working Offline...", Toast.LENGTH_LONG).show();
+        }
 
     }
 
@@ -86,9 +62,11 @@ public class TimelineActivity extends BaseClass {
         viewPager.setAdapter(adapter);
     }
 
+/*
     public FloatingActionButton getFloatingActionButton() {
         return fab;
     }
+*/
 
 
     /*
@@ -125,5 +103,24 @@ public class TimelineActivity extends BaseClass {
         public int getCount() {
             return tabTitles.length;
         }
+    }
+
+
+    private Boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+    }
+
+    public boolean isOnline() {
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int     exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
+        } catch (IOException e)          { e.printStackTrace(); }
+        catch (InterruptedException e) { e.printStackTrace(); }
+        return false;
     }
 }

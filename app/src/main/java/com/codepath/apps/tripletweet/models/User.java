@@ -14,6 +14,8 @@ public class User {
     public String profileImageUrl;
     public String profileBackgroundImageUrl;
     public String description;
+    public int    followersCount;
+    public int    followingCount;
 
     // Getters
     public String getName() {
@@ -36,6 +38,10 @@ public class User {
 
     public String getDescription() { return description; }
 
+    public int getFollowersCount() { return followersCount; }
+
+    public int getFollowingCount() { return followingCount; }
+
     public static User fromJSON(JSONObject jsonObject){
         User user = new User();
 
@@ -47,6 +53,8 @@ public class User {
             user.profileImageUrl = jsonObject.getString("profile_image_url");
             user.profileBackgroundImageUrl = jsonObject.getString("profile_background_image_url");
             user.description = jsonObject.getString("description");
+            user.followersCount = jsonObject.getInt("followers_count");
+            user.followingCount = jsonObject.getInt("friends_count");
         } catch (JSONException e) {
             e.printStackTrace();
         }

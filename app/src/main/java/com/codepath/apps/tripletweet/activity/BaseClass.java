@@ -47,11 +47,6 @@ public class BaseClass extends AppCompatActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-/*            case R.id.menu_logout:
-                mTwitterClient.clearAccessToken();
-                Intent loginIntent = new Intent(this, LoginActivity.class);
-                startActivity(loginIntent);
-                return true;*/
             case R.id.action_profile:
                 Intent profileIntent = new Intent(this, ProfileActivity.class);
                 startActivity(profileIntent);
@@ -59,10 +54,6 @@ public class BaseClass extends AppCompatActivity{
 /*            case R.id.menu_search:
                 Intent searchIntent = new Intent(this, SearchActivity.class);
                 startActivity(searchIntent);
-                return true;*/
-/*            case R.id.menu_dm:
-                Intent dmIntent = new Intent(this, DirectMessageActivity.class);
-                startActivity(dmIntent);
                 return true;*/
             default:
                 return super.onOptionsItemSelected(item);
