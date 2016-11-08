@@ -62,13 +62,6 @@ public class TimelineActivity extends BaseClass {
         viewPager.setAdapter(adapter);
     }
 
-/*
-    public FloatingActionButton getFloatingActionButton() {
-        return fab;
-    }
-*/
-
-
     /*
      *  TweetsPagerAdapter
      */

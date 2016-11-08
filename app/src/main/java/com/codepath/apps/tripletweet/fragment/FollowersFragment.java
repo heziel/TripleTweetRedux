@@ -6,12 +6,19 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.codepath.apps.tripletweet.R;
 import com.codepath.apps.tripletweet.network.TwitterApplication;
 import com.codepath.apps.tripletweet.network.TwitterClient;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class FollowersFragment extends Fragment{
+    @BindView(R.id.textViewTest)
+    TextView textView;
+
     private TwitterClient client;
     private Long userId;
     private Long nextCursor;
@@ -30,12 +37,15 @@ public class FollowersFragment extends Fragment{
         client = TwitterApplication.getRestClient();
         userId = getArguments().getLong("userId");
         //populateWithUsers();
+
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_test, parent, false);
+        ButterKnife.bind(this,view);
+        textView.setText("Followers...");
         return view;
     }
 }

@@ -3,6 +3,7 @@ package com.codepath.apps.tripletweet.fragment;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.codepath.apps.tripletweet.models.Tweet;
@@ -76,5 +77,11 @@ public class MentionsTimelineFragment extends TweetListFragment{
         String maxID = String.valueOf(getTweetArrayList().get(arrayLength).getUnique_id());
         Toast.makeText(getActivity(), "Loading...", Toast.LENGTH_SHORT).show();
         populateTimeline(maxID);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        fab.setVisibility(View.GONE);
     }
 }

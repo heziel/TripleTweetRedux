@@ -98,7 +98,7 @@ public class ProfileActivity extends BaseClass {
         viewPager.setAdapter(adapter);
         tabLayout.setViewPager(viewPager);
 
-        viewPager.setPageTransformer(true, new CubeInTransformer());
+        viewPager.setPageTransformer(true, new RotateUpTransformer());
     }
 
 

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
-public class HomeTimelineFragment extends TweetListFragment {
+public class HomeTimelineFragment extends TweetListFragment implements ComposeFragment.newTweetListener  {
     public TwitterClient twitterClient;
 
     public HomeTimelineFragment() {
@@ -67,5 +67,12 @@ public class HomeTimelineFragment extends TweetListFragment {
             Toast.makeText(getActivity(), "Loading...", Toast.LENGTH_SHORT).show();
             populateTimeline(maxID);
         }
+    }
+    @Override
+    public void onFinishComposeTweet(Tweet tweet) {
+        getTweetsArrayAdapter().clear();
+        populateTimeline(null);
+  //      getTweetsArrayAdapter().add(tweet);
+//        getTweetsArrayAdapter().notifyDataSetChanged();
     }
 }

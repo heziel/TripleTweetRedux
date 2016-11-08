@@ -56,7 +56,8 @@ public class BaseClass extends AppCompatActivity{
                 startActivity(searchIntent);
                 return true;*/
             default:
-                return super.onOptionsItemSelected(item);
+           //     return super.onOptionsItemSelected(item);
+                return true;
         }
     }
 }

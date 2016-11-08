@@ -1,5 +1,7 @@
 package com.codepath.apps.tripletweet.fragment;
 
+import android.app.SearchManager;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
@@ -8,12 +10,18 @@ import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.codepath.apps.tripletweet.R;
 import com.codepath.apps.tripletweet.adapter.TweetsArrayAdapter;
@@ -26,7 +34,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public abstract class TweetListFragment extends Fragment implements ComposeFragment.newTweetListener {
+public abstract class TweetListFragment extends Fragment {
     @BindView(R.id.swipeContainer)
     SwipeRefreshLayout swipeContainerLayout;
 
@@ -39,7 +47,6 @@ public abstract class TweetListFragment extends Fragment implements ComposeFragm
     private RecyclerView rvTripleTweet;
     private SwipeRefreshLayout swipeContainer;
     private EndlessRecyclerViewScrollListener scrollListener;
-  //  private FloatingActionButton fab;
 
     //getters
     public TweetsArrayAdapter getTweetsArrayAdapter() {
@@ -90,7 +97,6 @@ public abstract class TweetListFragment extends Fragment implements ComposeFragm
 
         // Set layout manager to position the items
         rvTripleTweet.setLayoutManager(linearLayoutManager);
-
 
         // Pagination
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
@@ -170,9 +176,6 @@ public abstract class TweetListFragment extends Fragment implements ComposeFragm
         composeDialogFragment.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Holo_Dialog_NoActionBar);
     }
 
-    @Override
-    public void onFinishComposeTweet(Tweet tweet) {
-        tweetsArrayAdapter.add(tweet);
-    }
+
 
 }
